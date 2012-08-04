@@ -1,7 +1,7 @@
 <div class="pagination pagination-centered">
   <ul>
     <% if(offset && offset > 0) { %>
-      <li><a href="/movies?limit=<%= limit %>&offset=<%= offset - limit %>">Prev</a></li>
+      <li><a href="<%= urlFor({controller: "movies", action: "index", limit: limit, offset: offset - limit }); %>">Prev</a></li>
     <% } %>
     <li class="active">
       <% if(offset == null || offset < 1) { %>
@@ -10,6 +10,7 @@
         <a href="#"><%= offset / limit + 1 %></a>
       <% } %>
     </li>
-    <li><a href="/movies?limit=<%= limit %>&offset=<%= offset + limit %>">Next</a></li>
+    <li><a href="<%= urlFor({controller: "movies", action: "index", limit: limit, offset: offset + limit }); %>">Next</a></li>
+    <li></li>
   </ul>
 </div>

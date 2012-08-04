@@ -4,6 +4,11 @@ var Movies = function () {
   this.index = function (req, resp, params) {
     var self = this;
 
+    var query = {};
+    if(params.q) {
+      query = params.q;
+    }
+
     var limit = 100; // default limit 
     if(params.limit) {
       limit = parseInt(params.limit);
@@ -16,7 +21,7 @@ var Movies = function () {
 
     var count = -1;
 
-    geddy.model.adapter.Movie.all({}
+    geddy.model.adapter.Movie.all(query
       , {sort: {title: 1}, limit: limit, skip: offset}
       , function(err, data) {
         self.respond({params: params

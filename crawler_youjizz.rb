@@ -16,17 +16,18 @@ class CrawlerYoujizz
 	@@XPATH_MOVIE = "//span[@id='miniatura']"
 	@@XPATH_MOVIE_URI = "span[@id='min']/a/@href"
 	@@XPATH_MOVIE_TITLE = "span[@id='title1']"
-	@@XPATH_MOVIE_THUMBNAILS = "//span[@id='miniatura']/span/img"
+	@@XPATH_MOVIE_THUMBNAILS = "span[@id='min']/img"
 	@@LAST_PROCESSED_URI_PATH = ".last-url.txt"
 	@@MONGODB_DBNAME = "atp"
-	@@MONGODB_COLLECTION = "atp"
+	@@MONGODB_COLLECTION = "movies"
 
+	# C-tor
 	def initialize
 		@mongo = nil
-
 		mongo_connect()
 	end
 
+	# Connect to MongoDB
 	def mongo_connect
 		begin
 			@mongo = Mongo::Connection.new
@@ -84,7 +85,7 @@ class CrawlerYoujizz
 			movie = {}
 			movie["type"] = :movie
 			movie["uri"] = @@URI_ROOT + node.xpath(@@XPATH_MOVIE_URI).text
-			movie["title"] = node.xpath(@@XPATH_MOVIE_TITLE).text
+			movie["title"] = node.xpath(@@XPATH_MOVIE_TITLE).text.downcase
 			movie["imgs"] = []
 			node.xpath(@@XPATH_MOVIE_THUMBNAILS).each do |node_img|
 				movie["imgs"] << node_img["data-original"]
@@ -113,22 +114,27 @@ class CrawlerYoujizz
 		doc.xpath(@@XPATH_NEXT_PAGE).each do |node|
 			return node["href"]
 		end
+		return nil
 	end
 
 	# Process youjizz.com page - extract movies, continue with next page
 	def process(doc)
 		movies = get_movies(doc)
 
-		np = get_next_page(doc)
-		@uri = nil
-		@uri = @@URI_ROOT + np if np != nil
+		np = @@URI_ROOT + get_next_page(doc)
+
+		if(np && np != @uri)
+			@uri = np
+		else
+			@uri = nil
+		end
 	end
 
 	# Crawl youjizz.com page
 	def crawl
 		store_last_crawled_uri(@uri)
 		process(fetch(@uri))
-		puts "Documents: #{@mongo_coll.count}"
+		CrawlerYoujizz.log "Documents: #{@mongo_coll.count}"
 	end
 
 	# Run app

@@ -1,0 +1,27 @@
+<div class="hero-unit">
+  <h2>Movies</h2>
+  <%#- linkTo('Add new Movie', addMoviePath, {class: 'btn pull-right'}) %>
+
+  <div class="container-fluid">
+    <% if (movies && movies.length) { %>
+      <ul class="thumbnails">
+      <% for (var i in movies) { %>
+        <!-- div class="row todo-item">
+          <div class="span8">
+              <h3><%- linkTo(movies[i].title, editMoviePath(movies[i].id)) %></h3>
+          </div>
+          <div class="span4"><h3><i class="icon-list-alt"></i><%= movies[i].title; %></h3></div>
+        </div -->
+
+        <li class="span3">
+          <h4><%= movies[i].title; %></h4>
+          <a href="<%= movies[i].uri; %>" class="thumbnail">
+            <%#= movies[i].imgs[0]; %>
+            <img src="/img/sunflower.jpg" style="width:260px; height: 180px;" alt="">
+          </a>
+        </li>
+      <% } %>
+      </ul>
+    <% } %>
+  </div>
+</div>

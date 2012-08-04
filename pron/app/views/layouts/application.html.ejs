@@ -33,11 +33,14 @@
           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             <span class="i-bar"><i class="icon-chevron-down icon-white"></i></span>
           </a>
-          <%- linkTo('All The Porn', '/', { class: 'brand' }) %>
+          <%#- linkTo('All The Porn', '/', { class: 'brand' }) %>
+          <a href="/" class="brand"></a>
           <div class="nav-collapse">
             <ul class="nav">
+              <li><img src="/img/logo.png"></img></li>
               <li class="divider-vertical"></li>
               <li><%- linkTo('Home', '/') %></li>
+              <li><%- linkTo('Categories', '/') %></li>
               <li class="divider-vertical"></li>
               <li><%- linkTo('Geddy Tutorial', 'http://geddyjs.org/tutorial.html') %></li>
               <li><%- linkTo('Geddy Docs', 'http://geddyjs.org/docs.html') %></li>
@@ -50,10 +53,15 @@
     <div class="container">
       <div class="control-group">
         <div class="input-prepend">
-          <span class="add-on">
-              <i class="icon-search"></i>
-          </span>
-          <input type="search" class="span3 " placeholder="Search" name="search" id="search" style="float: left;"/>
+          <form>  
+            <div class="btn-group" style="float: right;">
+              <button class="btn">Search</button>
+            </div>
+            <input type="search" class="span3 " placeholder="Type your search" name="q" id="search" style="float: right;"/>
+            <span class="add-on" style="float: right;">
+                <i class="icon-search"></i>
+            </span>
+          </form>
         </div>
       </div>
       <%- yield(); %>

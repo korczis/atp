@@ -5,8 +5,10 @@ var Movies = function () {
     var self = this;
 
     var query = {};
+
     if(params.q) {
-      query = params.q;
+      query = { title: params.q }
+      // query = { title: "" };
     }
 
     var limit = 100; // default limit 

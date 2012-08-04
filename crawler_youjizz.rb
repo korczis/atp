@@ -37,6 +37,8 @@ class CrawlerYoujizz
 		@mongo_db = @mongo.db(@@MONGODB_DBNAME)
 		
 		@mongo_coll = @mongo_db.collection(@@MONGODB_COLLECTION)
+		
+		# TODO: Make optional via command-line switch
 		@mongo_coll.drop
 		@mongo_coll = @mongo_db.collection(@@MONGODB_COLLECTION)
 
@@ -80,6 +82,7 @@ class CrawlerYoujizz
 		movies = []
 		doc.xpath(@@XPATH_MOVIE).each do |node|
 			movie = {}
+			movie["type"] = :movie
 			movie["uri"] = @@URI_ROOT + node.xpath(@@XPATH_MOVIE_URI).text
 			movie["title"] = node.xpath(@@XPATH_MOVIE_TITLE).text
 			movie["imgs"] = []
@@ -88,10 +91,11 @@ class CrawlerYoujizz
 			end
 
 			# movie.merge!(crawl_movie(movie["uri"]))
-		
+
 			if(true || movie['flv'])
 				begin
-					@mongo_coll.insert(movie)
+					unique = @mongo_coll.find({"uri" => Regexp.new(movie["uri"])}).count == 0
+					@mongo_coll.insert(movie) if unique
 				rescue Exception => e
 					CrawlerYoujizz.log "Unable to insert document into MongoDB, reason: '#{e.to_s}'"
 				end
@@ -116,22 +120,25 @@ class CrawlerYoujizz
 		movies = get_movies(doc)
 
 		np = get_next_page(doc)
-		crawl(@@URI_ROOT + np) if np != nil
+		@uri = nil
+		@uri = @@URI_ROOT + np if np != nil
 	end
 
 	# Crawl youjizz.com page
-	def crawl(uri)
-		store_last_crawled_uri(uri)
-		process(fetch(uri))
+	def crawl
+		store_last_crawled_uri(@uri)
+		process(fetch(@uri))
+		puts "Documents: #{@mongo_coll.count}"
 	end
 
 	# Run app
 	def run
-		uri = load_last_crawled_uri
-		if uri
-			crawl(uri)
-		else
-			crawl(@@URI_ROOT + "/")
+		@uri = load_last_crawled_uri
+		@uri = @@URI_ROOT + "/" if @uri.nil?
+		
+		# Non-recursive processing of all pages
+		until @uri.nil? 
+			crawl if @uri
 		end
 	end
 

@@ -1,8 +1,9 @@
 <div class="hero-unit">
-  <h2>Movies</h2>
   <%#- linkTo('Add new Movie', addMoviePath, {class: 'btn pull-right'}) %>
 
   <div class="container-fluid">
+    <%= partial("_pagination", {params: params, limit: limit, offset: offset, count: count }) %>
+
     <% if (movies && movies.length) { %>
       <ul class="thumbnails">
       <% for (var i in movies) { %>
@@ -17,11 +18,13 @@
           <h4><%= movies[i].title; %></h4>
           <a href="<%= movies[i].uri; %>" class="thumbnail">
             <%#= movies[i].imgs[0]; %>
-            <img src="/img/sunflower.jpg" style="width:260px; height: 180px;" alt="">
+            <img src="/img/sunflower.jpg" style="width:260px; height: 180px;" alt="<%= movies[i].title; %>">
           </a>
         </li>
       <% } %>
       </ul>
     <% } %>
   </div>
+
+  <%= partial("_pagination", {params: params, limit: limit, offset: offset, count: count }) %>
 </div>

@@ -3,9 +3,28 @@ var Movies = function () {
 
   this.index = function (req, resp, params) {
     var self = this;
+
+    var limit = 100; // default limit 
+    if(params.limit) {
+      limit = parseInt(params.limit);
+    }
+
+    var offset = 0; // default offset
+    if(params.offset) {
+      offset = parseInt(params.offset);
+    }
+
+    var count = -1;
+
     geddy.model.adapter.Movie.all({}
-    , {sort: {title: 1}, limit: 100}, function(err, data){
-      self.respond({params: params, movies: data});
+      , {sort: {title: 1}, limit: limit, skip: offset}
+      , function(err, data) {
+        self.respond({params: params
+          , movies: data
+          , count: count
+          , limit: limit
+          , offset: offset
+        });
     });
   };
 

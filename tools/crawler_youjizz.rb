@@ -40,8 +40,8 @@ class CrawlerYoujizz
 		@mongo_coll = @mongo_db.collection(@@MONGODB_COLLECTION)
 		
 		# TODO: Make optional via command-line switch
-		@mongo_coll.drop
-		@mongo_coll = @mongo_db.collection(@@MONGODB_COLLECTION)
+		# @mongo_coll.drop
+		# @mongo_coll = @mongo_db.collection(@@MONGODB_COLLECTION)
 
 		CrawlerYoujizz.log "Connected to MongoDB"
 	end
@@ -120,7 +120,11 @@ class CrawlerYoujizz
 
 	# Process youjizz.com page - extract movies, continue with next page
 	def process(doc)
-		movies = get_movies(doc)
+		begin
+			movies = get_movies(doc)
+		rescue Exception => e
+			CrawlerYoujizz.log "Unable to extract movies, reason: '#{e.to_s}'"
+		end
 
 		np = @@URI_ROOT + get_next_page(doc)
 

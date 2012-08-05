@@ -4,25 +4,30 @@ var Movies = function () {
   this.index = function (req, resp, params) {
     var self = this;
 
-    var query = {};
-
-    if(params.q) {
-      query = { title: params.q }
-      // query = { title: "" };
-    }
-
+    // Limit in params?
     var limit = 100; // default limit 
     if(params.limit) {
       limit = parseInt(params.limit);
     }
 
+    // Offset in params?
     var offset = 0; // default offset
     if(params.offset) {
       offset = parseInt(params.offset);
     }
 
+    // TODO: Get total count
     var count = -1;
 
+    // Query in params?
+    var query = {};
+    if(params.q) {
+      query = { title: params.q }
+    } else if (params.fts) {
+      query = { fts: ["adorable", "teen", "gets", "fucked"] };
+    }
+
+    // Fetch data
     geddy.model.adapter.Movie.all(query
       , {sort: {title: 1}, limit: limit, skip: offset}
       , function(err, data) {

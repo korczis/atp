@@ -5,6 +5,7 @@ var Movie = function () {
     , uri: {type: 'string'}
     , title: {type: 'string'}
     , imgs: {type: 'array'}
+    , fts: {type: 'array'}
   });
 
   this.adapter = "Mongo";

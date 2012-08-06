@@ -24,7 +24,7 @@ var Movies = function () {
     if(params.q) {
       query = { title: params.q }
     } else if (params.fts) {
-      query = { fts: ["adorable", "teen", "gets", "fucked"] };
+      query = { fts: ["this", "is", "test"] };
     }
 
     // Fetch data

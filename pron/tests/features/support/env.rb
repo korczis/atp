@@ -3,11 +3,11 @@ require 'capybara/cucumber'
 require 'rspec'
 require 'selenium/webdriver'
 require 'capybara-screenshot'
-require 'FileUtils'
+require 'fileutils'
 
 
 
-Capybara.app_host = "http://localhost:56789"
+Capybara.app_host = "http://localhost:4000"
 
 # IE settings
 Capybara.register_driver :ie do |app|

@@ -1,6 +1,8 @@
 source "http://rubygems.org"
 source "http://gems.github.com"
 
+gem 'fileutils'
+
 gem 'rb-readline'
 gem 'guard-shell'
 gem 'guard'

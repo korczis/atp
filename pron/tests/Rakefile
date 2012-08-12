@@ -1,0 +1,16 @@
+require 'rubygems'
+require 'bundler'
+
+namespace :test do
+	desc "Test UI using capybara"
+  	task :ui do
+    	wd = Dir.getwd
+    	
+    	begin
+    		system("cucumber")
+    	rescue Exception => e
+    		puts "Error: #{e.to_s}"
+    	end
+    	Dir.chdir(wd)
+	end
+end

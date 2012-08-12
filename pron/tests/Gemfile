@@ -1,0 +1,18 @@
+source "http://rubygems.org"
+source "http://gems.github.com"
+
+gem 'rb-readline'
+gem 'guard-shell'
+gem 'guard'
+gem 'guard-cucumber'
+
+gem 'rspec'
+gem 'webrat'
+gem 'spork'
+gem 'snapurl'
+gem 'cucumber'
+gem 'capybara'
+gem 'watir-webdriver'
+gem 'capybara-screenshot'
+gem 'selenium-webdriver', '>= 0.0.29'
+# gem 'win32console'
